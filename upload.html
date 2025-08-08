@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Upload Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --bg-color: #0D0D0D;
+            --card-color: #0D0D0D;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-color: #007bff;
+            --border-color: #2a2a2a;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --input-bg: #0D0D0D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 0;
+        }
+        
+        .top-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--card-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .header-icon.check-icon {
+            color: var(--success-color);
+        }
+        
+        .upload-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-color);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .upload-container.hide {
+            transform: scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .upload-header {
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .upload-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .upload-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .form-group {
+            text-align: left;
+            position: relative;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .form-group label i {
+            color: var(--accent-color);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .form-input-wrapper {
+            position: relative;
+        }
+
+        .form-input-wrapper input,
+        .form-input-wrapper textarea {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input-wrapper input::placeholder,
+        .form-input-wrapper textarea::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .form-input-wrapper input:focus,
+        .form-input-wrapper textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+        }
+
+        .form-input-wrapper textarea {
+            min-height: 100px;
+            resize: vertical;
+            padding: 12px 16px;
+        }
+        
+        .form-input-wrapper textarea + .input-icon {
+            display: none;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+        
+        .form-input-wrapper:focus-within .input-icon {
+            color: var(--accent-color);
+        }
+
+        /* --- Social Media Form Styling --- */
+        .social-media-group {
+            text-align: left;
+        }
+
+        .social-media-group > label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .social-media-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .social-media-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .social-media-item input[type="checkbox"] {
+            margin: 0;
+        }
+
+        .social-media-item label {
+            margin: 0;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        
+        .social-media-input-wrapper {
+            margin-top: 0.5rem;
+        }
+        .social-media-input-wrapper .form-input-wrapper input {
+            padding-left: 16px;
+        }
+        
+        .social-media-input-wrapper .input-icon {
+            display: none;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .upload-btn, .reset-btn {
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .upload-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .reset-btn {
+            background-color: var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .upload-btn:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        
+        .upload-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .reset-btn:hover {
+            background-color: #3a3a3a;
+        }
+
+        .info-note {
+            background-color: var(--card-color);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 20px 0;
+            text-align: left;
+            border-left: 3px solid var(--accent-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .info-note i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+
+        /* Thank You Page Styles */
+        .thank-you-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-color);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        
+        .thank-you-container.show {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+            position: static;
+        }
+
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            background-color: var(--success-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .checkmark-circle i {
+            color: white;
+            font-size: 36px;
+        }
+
+        .thank-you-container h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .thank-you-container p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Loading Animation Styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: none;
+        }
+        
+        .loading-overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #444;
+            border-top: 5px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        /* --- New Shortlink Checkbox Styling --- */
+        .checkbox-container {
+            display: block;
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .checkbox-container:hover input ~ .checkmark {
+            background-color: #333;
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        /* Styling for the new shortlink fields */
+        #shortlink-fields .form-group {
+            margin-bottom: 20px;
+        }
+        #shortlink-fields .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 600px) {
+            .upload-container,
+            .thank-you-container {
+                padding: 30px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+     <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div id="uploadPage" class="upload-container">
+        <div class="upload-header">
+            <h1>Upload Your Module</h1>
+            <p>Share your creation with the community and increase your module's popularity</p>
+        </div>
+
+        <form id="uploadForm" class="upload-form" autocomplete="off">
+            <div class="form-group">
+                <label for="userName"><i class="fas fa-user"></i>Your Name</label>
+                <div class="form-input-wrapper">
+                    <input type="text" id="userName" name="userName" placeholder="@developer" required>
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+            </div>
+
+            <div class="social-media-group">
+                <label>Social Media Links (Optional)</label>
+                <div class="social-media-options">
+                    <div class="social-media-item">
+                        <input type="checkbox" id="check-youtube">
+                        <label for="check-youtube"><i class="fab fa-youtube"></i> YouTube</label>
+                    </div>
+                    <div class="social-media-item">
+                        <input type="checkbox" id="check-telegram">
+                        <label for="check-telegram"><i class="fab fa-telegram-plane"></i> Telegram</label>
+                    </div>
+                    <div class="social-media-item">
+                        <input type="checkbox" id="check-github">
+                        <label for="check-github"><i class="fab fa-github"></i> GitHub</label>
+                    </div>
+                </div>
+
+                <div class="social-media-input-wrapper" id="input-youtube" style="display: none;">
+                    <div class="form-input-wrapper">
+                        <input type="url" name="youtubeLink" placeholder="https://youtube.com/@channel" autocomplete="off">
+                    </div>
+                </div>
+                <div class="social-media-input-wrapper" id="input-telegram" style="display: none;">
+                    <div class="form-input-wrapper">
+                        <input type="url" name="telegramLink" placeholder="https://t.me/channel" autocomplete="off">
+                    </div>
+                </div>
+                <div class="social-media-input-wrapper" id="input-github" style="display: none;">
+                    <div class="form-input-wrapper">
+                        <input type="url" name="githubLink" placeholder="https://github.com/username" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="moduleName"><i class="fas fa-cube"></i>Module Name</label>
+                <div class="form-input-wrapper">
+                    <input type="text" id="moduleName" name="moduleName" placeholder="Enter module name" required>
+                    <i class="fas fa-cube input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="moduleVersion"><i class="fas fa-code-branch"></i>Module Version</label>
+                <div class="form-input-wrapper">
+                    <input type="text" id="moduleVersion" name="moduleVersion" placeholder="Enter version number" required>
+                    <i class="fas fa-code-branch input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description"><i class="fas fa-file-alt"></i>Short Description</label>
+                <div class="form-input-wrapper">
+                    <textarea id="description" name="description" placeholder="Describe your module's features" required></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="useShortlinkCheckbox">
+                    <span class="checkmark"></span>
+                    Use Shortlink
+                </label>
+            </div>
+
+            <div id="shortlink-fields" style="display: none;">
+                <div class="form-group">
+                    <label for="shortlinkOriginalLink"><i class="fas fa-link"></i>Original Link</label>
+                    <div class="form-input-wrapper">
+                        <input type="url" id="shortlinkOriginalLink" name="shortlinkOriginalLink" placeholder="https://original-link.com" autocomplete="off">
+                        <i class="fas fa-link input-icon"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="userShortlink"><i class="fas fa-link"></i>Your Shortlink</label>
+                    <div class="form-input-wrapper">
+                        <input type="url" id="userShortlink" name="userShortlink" placeholder="https://your-shortlink.com" autocomplete="off">
+                        <i class="fas fa-link input-icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="originalDownloadLinkWrapper">
+                <label for="downloadLink"><i class="fas fa-link"></i>Download Link</label>
+                <div class="form-input-wrapper">
+                    <input type="url" id="downloadLink" name="downloadLink" placeholder="https://example.com/module" required>
+                    <i class="fas fa-link input-icon"></i>
+                </div>
+            </div>
+
+            <div class="info-note">
+                <i class="fas fa-info-circle"></i> Each module will be reviewed for security and functionality Once approved the module will be published within 24 hours Please check the Latest Modules page regularly
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="upload-btn">
+                    <i class="fas fa-upload"></i> Upload Module
+                </button>
+                <button type="button" class="reset-btn" id="resetButton">
+                    <i class="fas fa-redo"></i> Reset Form
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div id="thankYouPage" class="thank-you-container">
+        <div class="checkmark-circle">
+            <i class="fas fa-check"></i>
+        </div>
+        <h1>Thank You!</h1>
+        <p>Your module has been successfully submitted Our team will review and process it within 24 hours</p>
+        <button class="back-btn" id="backButton">
+            <i class="fas fa-arrow-left"></i> Back to Upload
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("S_3IKKcNNLmbo6Duf");
+        })();
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const useShortlinkCheckbox = document.getElementById('useShortlinkCheckbox');
+            const shortlinkFields = document.getElementById('shortlink-fields');
+            const originalDownloadLinkWrapper = document.getElementById('originalDownloadLinkWrapper');
+            const originalDownloadInput = document.getElementById('downloadLink');
+            const shortlinkOriginalInput = document.getElementById('shortlinkOriginalLink');
+            const userShortlinkInput = document.getElementById('userShortlink');
+            const uploadForm = document.getElementById('uploadForm');
+            const resetButton = document.getElementById('resetButton');
+
+            function resetFormState() {
+                uploadForm.reset();
+                
+                useShortlinkCheckbox.checked = false;
+                shortlinkFields.style.display = 'none';
+                originalDownloadLinkWrapper.style.display = 'block';
+                originalDownloadInput.setAttribute('required', 'required');
+                shortlinkOriginalInput.removeAttribute('required');
+                userShortlinkInput.removeAttribute('required');
+
+                document.querySelectorAll('.social-media-item input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                    const inputGroup = document.getElementById(`input-${checkbox.id.split('-')[1]}`);
+                    inputGroup.style.display = 'none';
+                    inputGroup.querySelector('input').value = '';
+                });
+            }
+
+            useShortlinkCheckbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    originalDownloadLinkWrapper.style.display = 'none';
+                    shortlinkFields.style.display = 'block';
+                    originalDownloadInput.removeAttribute('required');
+                    shortlinkOriginalInput.setAttribute('required', 'required');
+                    userShortlinkInput.setAttribute('required', 'required');
+                } else {
+                    originalDownloadLinkWrapper.style.display = 'block';
+                    shortlinkFields.style.display = 'none';
+                    originalDownloadInput.setAttribute('required', 'required');
+                    shortlinkOriginalInput.removeAttribute('required');
+                    userShortlinkInput.removeAttribute('required');
+                    shortlinkOriginalInput.value = '';
+                    userShortlinkInput.value = '';
+                }
+            });
+
+            document.querySelectorAll('.social-media-item input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const inputGroup = document.getElementById(`input-${e.target.id.split('-')[1]}`);
+                    if (e.target.checked) {
+                        inputGroup.style.display = 'block';
+                    } else {
+                        inputGroup.style.display = 'none';
+                        inputGroup.querySelector('input').value = '';
+                    }
+                });
+            });
+
+            uploadForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const form = e.target;
+                const uploadPage = document.getElementById('uploadPage');
+                const thankYouPage = document.getElementById('thankYouPage');
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                const submitBtn = form.querySelector('button[type="submit"]');
+
+                loadingOverlay.classList.add('show');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+                let description = form.description.value;
+
+                const socialLinks = [];
+                if (form.youtubeLink.value) {
+                    socialLinks.push(`YouTube: ${form.youtubeLink.value}`);
+                }
+                if (form.telegramLink.value) {
+                    socialLinks.push(`Telegram: ${form.telegramLink.value}`);
+                }
+                if (form.githubLink.value) {
+                    socialLinks.push(`GitHub: ${form.githubLink.value}`);
+                }
+                
+                if (socialLinks.length > 0) {
+                    description += `\n\n--- Social Media ---\n${socialLinks.join('\n')}`;
+                }
+                
+                let downloadLinkValue = '';
+                if (useShortlinkCheckbox.checked) {
+                    downloadLinkValue = `Original Link: ${form.shortlinkOriginalLink.value}\nShortlink: ${form.userShortlink.value}`;
+                } else {
+                    downloadLinkValue = form.downloadLink.value;
+                }
+
+                const formData = {
+                    userName: form.userName.value,
+                    moduleName: form.moduleName.value,
+                    moduleVersion: form.moduleVersion.value,
+                    description: description,
+                    downloadLink: downloadLinkValue,
+                    submissionDate: new Date().toLocaleString()
+                };
+
+                emailjs.send("service_cjcd59e", "template_lqc3m8s", formData)
+                    .then(function(response) {
+                        console.log("Email sent successfully!", response.status, response.text);
+                        uploadPage.classList.add('hide');
+                        setTimeout(() => {
+                            thankYouPage.classList.add('show');
+                        }, 300);
+                    })
+                    .catch(function(error) {
+                        console.error("Failed to send email:", error);
+                        alert("An error occurred while sending your module. Please try again.");
+                    })
+                    .finally(function() {
+                        loadingOverlay.classList.remove('show');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Module';
+                    });
+            });
+
+            document.getElementById('backButton').addEventListener('click', function() {
+                const uploadPage = document.getElementById('uploadPage');
+                const thankYouPage = document.getElementById('thankYouPage');
+                
+                thankYouPage.classList.remove('show');
+                
+                setTimeout(() => {
+                    uploadPage.classList.remove('hide');
+                    resetFormState();
+                }, 300);
+            });
+
+            resetButton.addEventListener('click', function() {
+                resetFormState();
+            });
+        });
+    </script>
+</body>
+</html>
