@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Membership</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --bg-color: #0D0D0D;
+            --card-color: #0D0D0D;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-color: #007bff;
+            --border-color: #0D0D0D;
+            --success-color: #0D0D0D;
+            --error-color: #0D0D0D;
+            --input-bg: #0D0D0D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .membership-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-color);
+            border-radius: 00px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
+        }
+        
+        .membership-header {
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .membership-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .membership-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Slideshow Styles */
+.slideshow-container {
+    position: relative;
+    width: 100%;
+    height: clamp(200px, 40vw, 300px);
+    overflow: hidden;
+    background-color: var(--bg-color);
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slideshow-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s ease-in-out;
+}
+
+.my-slides {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.slide-content h2 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+
+        /* Dots indicator */
+        .dots-container {
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: var(--text-secondary);
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--accent-color);
+            transform: scale(1.2);
+        }
+
+        /* Membership Benefits */
+        .benefits-container {
+            text-align: left;
+            margin: 30px 0;
+            padding: 0 10px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .benefit-icon {
+            color: var(--accent-color);
+            font-size: 20px;
+            margin-right: 15px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .benefit-text {
+            color: var(--text-primary);
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* Pricing Section */
+        .pricing-container {
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .price-tag {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .price-note {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Button Styles */
+        .purchase-btn {
+            background: linear-gradient(135deg, var(--accent-color), #0056b3);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .purchase-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .purchase-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Payment Instructions */
+        .payment-instructions {
+            text-align: left;
+            background: rgba(42, 42, 42, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .payment-instructions h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .instruction-point {
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        /* Admin Contact */
+        .admin-contact {
+            margin: 30px 0;
+        }
+
+        .admin-contact h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .contact-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .contact-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: transform 0.3s ease;
+        }
+
+        .contact-icon:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .wa-icon {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+
+        .telegram-icon {
+            background: linear-gradient(135deg, #0088cc, #005580);
+        }
+
+        .gmail-icon {
+            background: linear-gradient(135deg, #DB4437, #B23121);
+        }
+
+        .contact-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Animation for slides */
+        @keyframes fade {
+            from {opacity: .4}
+            to {opacity: 1}
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .membership-container {
+                padding: 30px 15px;
+            }
+            
+            .slide-content h2 {
+                font-size: 18px;
+            }
+            
+            .purchase-btn {
+                padding: 14px 20px;
+                font-size: 16px;
+            }
+            
+            .price-tag {
+                font-size: 28px;
+            }
+            
+            .contact-icons {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="membership-container">
+        <div class="membership-header">
+            <h1>Premium Membership</h1>
+            <p>Upgrade your experience with exclusive membership</p>
+        </div>
+
+        <!-- Slideshow -->
+        <div class="slideshow-container">
+            <div class="slideshow-wrapper">
+                <div class="my-slides">
+                    <div class="slide-content">
+                        <h2>Exclusive Members Page – Access premium files instantly without annoying shortlinks</h2>
+                    </div>
+                </div>
+                <div class="my-slides">
+                    <div class="slide-content">
+                        <h2>Download VIP Modules in one click – faster easier & ad-free</h2>
+                    </div>
+                </div>
+                <div class="my-slides">
+                    <div class="slide-content">
+                        <h2>Enjoy special VIP Modules different from the free ones & only for members</h2>
+                    </div>
+                </div>
+                <div class="my-slides">
+                    <div class="slide-content">
+                        <h2>Instant access simple and hassle-free – start now</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dots-container">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+
+        <!-- Benefits List -->
+        <div class="benefits-container">
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-star"></i></div>
+                <div class="benefit-text">Direct access to all premium files without annoying shortlinks</div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+                <div class="benefit-text">Download VIP modules with one click - faster and ad-free</div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-crown"></i></div>
+                <div class="benefit-text">Special VIP modules different from the free version and only for members</div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-lock-open"></i></div>
+                <div class="benefit-text">Simple instant access without hassle</div>
+            </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="pricing-container">
+            <div class="price-tag">Rp 15,000 / $0.65</div>
+            <div>One-Time Payment - Permanent Access</div>
+            <div class="price-note">No recurring monthly fees</div>
+        </div>
+
+        <!-- Purchase Button -->
+        <a href="https://lynk.id/vexiromembership/y08vm4w480zd" class="purchase-btn" id="purchaseButton">
+            Buy Now - Only 15K - Permanent Access
+        </a>
+
+        <!-- Payment Instructions -->
+        <div class="payment-instructions">
+            <h3>How to Make Payment</h3>
+            <div class="instruction-point">
+                <p>After making payment, you will receive a Login Token</p>
+            </div>
+            <div class="instruction-point">
+                <p>Use this token to log in to the membership page in the vexiro app</p>
+            </div>
+            <div class="instruction-point">
+                <p>If you encounter issues or the token doesn't appear, please contact admin below with your payment screenshot</p>
+            </div>
+        </div>
+
+        <!-- Admin Contact -->
+        <div class="admin-contact">
+            <h3>Contact Admin If You Have Issues</h3>
+            <div class="contact-icons">
+                <a href="https://t.me/tratweak" target="_blank" class="contact-icon">
+                    <div class="icon-circle telegram-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <span class="contact-label">Telegram</span>
+                </a>
+                <a href="https://wa.me/62895428599984" target="_blank" class="contact-icon">
+                    <div class="icon-circle wa-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <span class="contact-label">WhatsApp</span>
+                </a>
+                <a href="mailto:vexirodevteam@gmail.com" class="contact-icon">
+                    <div class="icon-circle gmail-icon">
+                        <i class="far fa-envelope"></i>
+                    </div>
+                    <span class="contact-label">Gmail</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2025 Premium Membership All rights reserved
+        </div>
+    </div>
+
+    <script>
+        // Slideshow functionality
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.my-slides');
+        const dots = document.querySelectorAll('.dot');
+        const slideWrapper = document.querySelector('.slideshow-wrapper');
+        
+        function showSlides() {
+            if (slideIndex >= slides.length) slideIndex = 0;
+            if (slideIndex < 0) slideIndex = slides.length - 1;
+            
+            // Update slide position
+            slideWrapper.style.transform = `translateX(-${slideIndex * 100}%)`;
+            
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === slideIndex);
+            });
+            
+            // Auto advance slide every 5 seconds
+            setTimeout(() => {
+                slideIndex++;
+                showSlides();
+            }, 3000);
+        }
+        
+        function currentSlide(n) {
+            slideIndex = n;
+            showSlides();
+        }
+        
+        // Initialize slideshow
+        showSlides();
+    </script>
+</body>
+</html>
