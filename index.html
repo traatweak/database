@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Updated</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0D0D0D;
+            --text-primary: #e0e0e0;
+            --accent-color: #1e88e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .maintenance-container {
+            max-width: 500px;
+            padding: 2rem;
+        }
+
+        .icon-wrapper {
+            font-size: 5rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .icon-wrapper {
+                font-size: 4rem;
+            }
+            
+            .message {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="maintenance-container">
+        <div class="icon-wrapper">
+            <i class="fas fa-database"></i>
+        </div>
+        
+        <div class="message">
+            <p><span class="highlight">We’re sorry</span> the database has been moved to the latest system</p>
+            <p>Please use the <span class="highlight">latest version of the app</span> to continue</p>
+        </div>
+    </div>
+</body>
+</html>
